@@ -27,10 +27,29 @@ const Map<String, int> colorMap = {
   'yellow': 0xFFFF00
 };
 
-Color parseColor(String color) {
+Color parseColor(BuildContext context, String color) {
 //  print("parseColor: $color");
   var v = colorMap[color];
   if (v == null) {
+    switch (color) {
+      case 'primary':
+        return Theme.of(context).colorScheme.primary;
+      case 'onPrimary':
+        return Theme.of(context).colorScheme.onPrimary;
+      case 'background':
+        return Theme.of(context).colorScheme.background;
+      case 'onBackground':
+        return Theme.of(context).colorScheme.onBackground;
+      case 'surface':
+        return Theme.of(context).colorScheme.surface;
+      case 'onSurface':
+        return Theme.of(context).colorScheme.onSurface;
+      case 'error':
+        return Theme.of(context).colorScheme.error;
+      case 'onError':
+        return Theme.of(context).colorScheme.onError;
+      default:
+    }
     return Colors.red;
   } else {
 //    return Color(v);
@@ -184,7 +203,7 @@ class SimpleRichText extends StatelessWidget {
             TextStyle ts;
             ts = style!.copyWith(
               color: map.containsKey('color')
-                  ? parseColor(map['color']!)
+                  ? parseColor(context, map['color']!)
                   : style!.color,
               decoration: set.contains('_')
                   ? TextDecoration.underline
@@ -200,10 +219,10 @@ class SimpleRichText extends StatelessWidget {
                   ? '${map['fontFamily']}'
                   : style!.fontFamily,
               backgroundColor: map.containsKey('backgroundColor')
-                  ? parseColor(map['backgroundColor']!)
+                  ? parseColor(context, map['backgroundColor']!)
                   : style!.backgroundColor,
               decorationColor: map.containsKey('decorationColor')
-                  ? parseColor(map['decorationColor']!)
+                  ? parseColor(context, map['decorationColor']!)
                   : style!.decorationColor,
               decorationStyle: _textDecorationStyle ?? style!.decorationStyle,
               decorationThickness: map.containsKey('decorationThickness')
@@ -224,19 +243,6 @@ class SimpleRichText extends StatelessWidget {
                 map.containsKey('push') ||
                 map.containsKey('repl') ||
                 map.containsKey('http')) {
-//            print("BBB cmd=$cmd");
-//          GestureDetector
-//        children.add(WidgetSpan(child: Text('****')));
-//          children.add(WidgetSpan(
-//              child: GestureDetector(
-//            child: Text('CLICK'),
-//            onTap: () async {
-//              //print("TAPPED");
-//            },
-//          )));
-
-              // assert(context != null, 'must pass context if using route links');
-
               onTapNew(String caption, Map m) {
                 if (map.containsKey('push')) {
                   String v = map['push']!;
@@ -369,6 +375,6 @@ class SimpleRichText extends StatelessWidget {
   } // build
 
   void log(String s) {
-    if (logIt) print('---- $s');
+    if (logIt) debugPrint('---- $s');
   }
 } // class
